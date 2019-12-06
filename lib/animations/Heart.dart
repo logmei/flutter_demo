@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
-/**
+/*
  * 采用有状态的widget
  */
 class HeartStateful extends StatefulWidget{
@@ -15,7 +15,7 @@ class HeartStateful extends StatefulWidget{
 class HeartState extends State<HeartStateful> with SingleTickerProviderStateMixin{
   // Animation是动画库中的核心类，拥有当前值和状态（完成或停止），与UI渲染没关系，可以通过实例获取当前的值
   Animation<double> animation;
-  /**
+  /*
    * AnimationController派生自Animation<double>,有控制动画的其他方法，范围是从0.0到1.0
    * forward():启动动画
    * reverse({dobule from}):倒放动画

@@ -1,5 +1,8 @@
+
+
 import 'package:flutter/material.dart';
-class Login extends StatelessWidget{
+import 'package:logmei_flutter_demo/MainPage.dart';
+class LoginPage extends StatelessWidget{
   
   @override
   Widget build(BuildContext context){
@@ -23,7 +26,27 @@ class LoginWidget extends StatefulWidget{
 }
 
 class LoginState extends State<LoginWidget>{
-  final TextEditingController _controller = new TextEditingController();
+  var name;
+  var password;
+  Function submitFun;
+  void getValueStatus(){
+    // print('current:name $name,password $password ');
+    if(name!='' && name != null && password !='' && password !=null){
+      setState(() {
+       submitFun = (){
+         print('submit:name $name,password $password ');
+        //  Navigator.of(context).pushReplacementNamed('/home');
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+          return MainPage(0);
+        }));
+       };
+      });
+    } else {
+      setState(() {
+      submitFun = null;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context){
@@ -45,8 +68,7 @@ class LoginState extends State<LoginWidget>{
               
               ),
             new TextField(
-                controller: _controller,
-                maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
+                // maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
                 maxLines: 1,//最大行数
                 autocorrect: false,//是否自动更正
                 autofocus: false,//是否自动对焦
@@ -68,7 +90,8 @@ class LoginState extends State<LoginWidget>{
                 style: TextStyle(fontSize: 16.0,color: new Color.fromRGBO(51, 51, 51, 1)),//输入文字的样式
                 // inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],//允许的输入格式
                 onChanged: (text) {//内容改变的回调
-                  print('change $text');
+                  name = text;
+                  getValueStatus();
                 },
                 onSubmitted: (text) {//内容提交(按回车)的回调
                   print('submit $text');
@@ -76,8 +99,10 @@ class LoginState extends State<LoginWidget>{
                 enabled: true,//是否禁用
                 cursorColor: new Color.fromRGBO(35,194,183,1),//光标颜色
           ),
-         new TextField(
-            maxLength:20,
+          new Container(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: new TextField(
+            // maxLength:20,
             obscureText: true,
             decoration: new InputDecoration(
               contentPadding: const EdgeInsets.only(bottom: 5.0),
@@ -85,23 +110,55 @@ class LoginState extends State<LoginWidget>{
               labelText: '请输入密码',
               labelStyle: TextStyle(fontSize: 16.0,color: new Color.fromRGBO(153, 153, 153, 1))
             ),
-            
+             cursorColor: new Color.fromRGBO(35,194,183,1),//光标颜色
+             onChanged: (text){
+               password = text;
+               getValueStatus();
+             },
+          ),
+          )
+         ,
+          new Container(
+            padding: const EdgeInsets.only(top: 15.0),
+            alignment: Alignment.centerRight,
+            child:Text(
+                '忘记密码',
+                style: TextStyle(
+                  fontSize: 13.0,
+                  color: Color.fromRGBO(153,153,153,1),
+                  
+                ),
+                )
+            ,
           ),
            new Container(
+            // alignment: Alignment.center,
             padding: const EdgeInsets.only(top: 66.0),
             width: 310,
             child:new RaisedButton(
-              onPressed: () {print('ssssssss');},
+              onPressed: submitFun,
               textColor: Color.fromRGBO(255,255,255,1),
               color: Color.fromRGBO(35,194,183,1),
               highlightColor: Color.fromRGBO(35,194,183,1),
-              disabledColor: Color.fromRGBO(35,194,183,1),
+              disabledColor: Color.fromRGBO(35,194,183,0.5),
+              disabledTextColor: Color.fromRGBO(255,255,255,1),
+              // disabledElevation: ,
               child: Text(
                 '登录',
                 style: new TextStyle(
-                  fontSize: 16.0
-                ),)
-              )
+                  fontSize: 16.0,
+                  letterSpacing: 20.0
+                ),),
+                shape: RoundedRectangleBorder(
+                  // side: new BorderSide(
+                  //   width: 1.0,
+                  //   color: Colors.white,
+                  //   style: BorderStyle.solid
+                  // ),
+                  borderRadius: BorderRadius.all(Radius.circular(20.0))
+                  ),
+              ),
+              
           )
 
           ],

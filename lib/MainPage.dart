@@ -5,29 +5,35 @@ import 'package:logmei_flutter_demo/DataPage.dart';
 import 'package:logmei_flutter_demo/BarPojo.dart';
 
 class MainPage extends StatelessWidget {
+  int _tabIndex = 0;
+  MainPage(this._tabIndex);
+
   @override
   Widget build(BuildContext context){
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: new MainPageWidget(),
+      home: new MainPageWidget(_tabIndex),
     );
   }
 }
 
 class MainPageWidget extends StatefulWidget {
+  int _tabIndex = 0;
+  MainPageWidget(this._tabIndex);
   @override
   State<StatefulWidget> createState(){
-    return new MainPageState();
+    return new MainPageState(_tabIndex);
   }
 }
 /*
  * 主工作台的状态
  */
 class MainPageState extends State<MainPageWidget>{
-  int _tabIndex = 1 ;
+  int _tabIndex = 0 ;
+  MainPageState(this._tabIndex);
   //appBars
   final appBarMap = [
-    new BarPojo('数据', new Icon(Icons.hotel) , new DataPage()),
+    new BarPojo('工单', new Icon(Icons.hotel) , new DataPage()),
     new BarPojo('工作台', new Icon(Icons.home), new HomePage()),
     new BarPojo('我的', new Icon(Icons.people), new Minepage())
   ];

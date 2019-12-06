@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:logmei_flutter_demo/DataPage.dart';
+// import 'package:logmei_flutter_demo/JsDemo.dart';
 import 'package:logmei_flutter_demo/MainPage.dart';
-import 'package:logmei_flutter_demo/Login.dart';
+import 'package:logmei_flutter_demo/LoginPage.dart';
+import 'package:logmei_flutter_demo/service/ServiceLocater.dart';
 
 
 /// Causes each RenderBox to paint a box around its bounds, and some extra
@@ -40,23 +43,51 @@ bool debugRepaintRainbowEnabled = false;
 /// Overlay a rotating set of colors when repainting text in checked mode.
 bool debugRepaintTextRainbowEnabled = false;
 void main(){
-  
+  //注册telsms服务
+  setupLocater();
   debugPaintSizeEnabled = true;
   debugPaintPointersEnabled = true;
   runApp(new MyApp());
   }
 
 class MyApp extends StatelessWidget {
-
     @override
     Widget build(BuildContext context){
       return new MaterialApp(
         debugShowCheckedModeBanner: false,
+        routes: {
+          '/':(BuildContext context) => new LoginPage(),
+          '/home':(BuildContext context) => new MainPage(0)
+        },
         theme: new ThemeData(
           primaryColor: Color.fromRGBO(35,194,183,1),
           primarySwatch: Colors.green
         ),
-        home: Login(),
+        initialRoute: '/',
+        // home: new JsDemo(),
+        onGenerateRoute: (setting){//当通过Navigation.of(context),pushNamed跳转路由时，在routes查找不到时，会调用该方法
+        //setting.isInitialRoute; bool类型 是否初始路由
+        //setting.name; 要跳转的路由名key
+        return new PageRouteBuilder(
+          pageBuilder: (BuildContext context, _, __){
+            return LoginPage();
+          },
+          opaque: true,
+          //跳转动画
+          transitionDuration: new Duration(milliseconds: 200),
+          transitionsBuilder:
+                (___, Animation<double> animation, ____, Widget child) {
+              return new FadeTransition(
+                opacity: animation,
+                child: new ScaleTransition(
+                  scale: new Tween<double>(begin: 0.5, end: 1.0)
+                      .animate(animation),
+                  child: child,
+                ),
+              );
+            }
+        );
+        },
       );
     }
 }
